@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:db="http://www.mulesoft.org/schema/mule/db" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd  http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd  http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+    <db:config name="Postgres_Database_Config" doc:name="Database Config" doc:id="7326c970-b047-40e6-991f-f787158b53d5">
+        <db:generic-connection url="${awsdb.url}" driverClassName="org.postgresql.Driver" user="${awsdb.user}" password="${awsdb.password}" />
+    </db:config>
+    <db:config name="Database_Config" doc:name="Database Config" doc:id="e2ad1681-6420-4d80-8e66-ccc30d2817d6">
+        <db:my-sql-connection host="iltdb.learn.mulesoft.com" port="3306" user="mule" password="mule" database="training" />
+    </db:config>
+    <http:listener-config name="project-2-flights-api-httpListenerConfig">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+    <apikit:config name="project-2-flights-api-config" api="resource::13165ad7-dae1-4222-86cc-dfc60f22e90b:project-2-flights-api:1.1.1:raml:zip:project-2-flights-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+    <configuration-properties doc:name="Configuration properties" doc:id="b7abffbc-3c2c-4c05-9e09-314a4bcd20d5" file="config.yaml" />
+</mule>
