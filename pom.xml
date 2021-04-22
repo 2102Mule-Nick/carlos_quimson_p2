@@ -83,7 +83,7 @@
     	<dependency>
             <groupId>13165ad7-dae1-4222-86cc-dfc60f22e90b</groupId>
             <artifactId>project-2-flights-api</artifactId>
-            <version>1.1.1</version>
+            <version>1.2.2</version>
             <classifier>raml</classifier>
             <type>zip</type>
         </dependency>

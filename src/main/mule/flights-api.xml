@@ -119,11 +119,10 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 		</db:insert>
 		<logger level="INFO" doc:name="Logger" doc:id="2a2c75c8-75b6-49f1-a697-5624eabcf406" />
 	</flow>
-	<flow name="update-flight-by-id" doc:id="bc803e2d-dafc-4360-8095-d9014d2de111" >
+	<flow name="replace-flight-by-id" doc:id="bc803e2d-dafc-4360-8095-d9014d2de111" >
 		<db:update doc:name="Update" doc:id="9763f874-a2fb-463e-b508-26865c9579f0" config-ref="Postgres_Database_Config">
 			<db:sql ><![CDATA[UPDATE flights
-SET code = :code, 
-	price = :price, 
+SET	price = :price, 
 	departureDate = :departureDate, 
 	origin = :origin, 
 	destination = :destination, 
@@ -151,9 +150,36 @@ WHERE id = :id]]></db:sql>
 output application/json
 ---
 {
+  message: "Flight replaced in db"
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="0a6db774-305f-445b-ae21-9904bdb7e7eb" />
+	</flow>
+	<flow name="update-flight-by-id" doc:id="8349cdaa-1771-488e-9580-2e9affa66a09" >
+		<db:update doc:name="Copy_of_Update" doc:id="3817e942-ce1f-42ce-94c3-2feb6145f422" config-ref="Postgres_Database_Config" >
+			<db:sql ><![CDATA[UPDATE flights
+SET	price = :price, 
+	emptySeats = :emptySeats 
+WHERE id = :id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[output application/java
+---
+{
+	id: vars.flight.id,
+	price: vars.flight.price,
+	emptySeats: vars.flight.emptySeats
+}]]]></db:input-parameters>
+		</db:update>
+		<ee:transform doc:name="Transform Message" doc:id="2b28b060-719c-4e4f-9cf4-0803a523b7d4" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
   message: "Flight updated in db"
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="d91b0ce9-0807-4a40-ac71-8ab8eb792b30" />
 	</flow>
 </mule>
