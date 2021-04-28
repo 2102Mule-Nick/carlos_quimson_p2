@@ -29,6 +29,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="f1c98cc2-190c-483a-94e3-ebbc6a6932ba" />
 	</flow>
 	<flow name="get-flights" doc:id="691c82b8-4290-4278-a631-995e33a9674b" >
 		<http:listener doc:name="Listener" doc:id="1e211954-bc67-4955-a477-5ad092b1260c" path="/flights" config-ref="project-2-flights-api-httpListenerConfig" />
@@ -52,6 +53,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="032fe9cb-4f0b-405f-8d6c-0aa585cf4321" />
 	</flow>
 	<flow name="delete-flight-by-id" doc:id="826f665c-dac0-4ae2-966f-570c9d499fae" >
 		<db:delete doc:name="Delete" doc:id="b34c6755-8ae6-40d9-8d82-cba0f2eab4c5" config-ref="Postgres_Database_Config">
@@ -72,6 +74,7 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="e114a73c-c04c-44a9-94f7-d27d59ffd9a6" />
 	</flow>
 	<flow name="get-flights-by-id" doc:id="e1419f72-e8a3-4f72-a08c-587819a42349" >
 		<db:select doc:name="Select" doc:id="a4a8585b-d5a3-42f5-abbf-b7bfedb7efa2" config-ref="Postgres_Database_Config">
@@ -99,6 +102,7 @@ payload map ( payload01 , indexOfPayload01 ) -> {
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+		<logger level="INFO" doc:name="Logger" doc:id="a3b75808-ea25-4847-a979-222afc1f6dae" />
 	</flow>
 	<flow name="create-flights" doc:id="57120d57-9d8e-4be2-8275-834248b08288" >
 		<db:insert doc:name="Insert" doc:id="4865450a-4a6c-4abd-80cb-013cc05c6f73" config-ref="Postgres_Database_Config">
@@ -181,5 +185,33 @@ output application/json
 			</ee:message>
 		</ee:transform>
 		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="d91b0ce9-0807-4a40-ac71-8ab8eb792b30" />
+	</flow>
+	<flow name="get-flights-with-destination" doc:id="c40a10f2-d16d-42fc-807b-dfcdf8822df9" >
+		<db:select doc:name="Copy_of_Select" doc:id="e6675ea8-c68a-46ac-bd47-c056dfe2f00b" config-ref="Postgres_Database_Config" >
+			<db:sql ><![CDATA[select * from flights WHERE destination = :destination]]></db:sql>
+			<db:input-parameters ><![CDATA[#[output application/java
+---
+{
+	destination: vars.destination
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Copy_of_Copy_of_Transform Message" doc:id="20f00fb3-6830-4bbc-9aa9-45801d7d8810" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload map ( payload01 , indexOfPayload01 ) -> {
+	flightCode: payload01.code default "",
+	fromAirportCode: payload01.origin default "",
+	toAirportCode: payload01.destination default "",
+	departureDate: payload01.departuredate default "",
+	emptySeats: payload01.emptyseats default 0,
+	totalSeats: payload01.totalseats default 0,
+	price: payload01.price default 0,
+	planeType: payload01.planetype default ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="Copy_of_Logger" doc:id="879fd7d6-417a-4b82-8b39-cbaae2d7573d" />
 	</flow>
 </mule>

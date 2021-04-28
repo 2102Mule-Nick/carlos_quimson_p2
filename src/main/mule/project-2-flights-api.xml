@@ -128,7 +128,15 @@ output application/json
         <flow-ref doc:name="delete-flight-by-id" doc:id="3223f2d0-8a35-4afb-b47b-f1bb98413091" name="delete-flight-by-id" />
     </flow>
     <flow name="get:\flights:project-2-flights-api-config">
-        <flow-ref doc:name="Flow Reference" doc:id="5c453425-bbe6-42ec-9056-074e6a81cd8d" name="get-flights" />
+        <set-variable value="#[attributes.queryParams.destination]" doc:name="destination" doc:id="1043d5e7-459a-4ba8-884f-581276411e90" variableName="destination"/>
+		<choice doc:name="Choice" doc:id="699080f0-97ca-40ec-aef5-5c5189ff192f" >
+			<when expression="#[vars.destination == 'SFO' or vars.destination == 'LAX' or vars.destination == 'CLE']">
+				<flow-ref doc:name="get-flights-with-destination" doc:id="af920de1-1d6e-4dea-b8bd-691f4662b0b9" name="get-flights-with-destination"/>
+			</when>
+			<otherwise >
+				<flow-ref doc:name="get-flights" doc:id="5c453425-bbe6-42ec-9056-074e6a81cd8d" name="get-flights" />
+			</otherwise>
+		</choice>
     </flow>
     <flow name="get:\flights\(flight_id):project-2-flights-api-config">
         <ee:transform>
