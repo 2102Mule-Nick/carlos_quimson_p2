@@ -189,15 +189,15 @@ output application/java
         <flow-ref doc:name="Flow Reference" doc:id="779f1b00-909a-4baa-9664-27c504b5704c" name="replace-flight-by-id" />
     </flow>
     <flow name="patch:\flights\(flight_id):project-2-flights-api-config">
-        <ee:transform>
+        <ee:transform doc:id="38aa9fec-ca50-4501-9398-1330740dc477">
             <ee:variables>
-                <ee:set-variable variableName="flight_id"><![CDATA[%dw 2.0
-output application/java
+				<ee:set-variable variableName="flight" ><![CDATA[%dw 2.0
+output application/json
 ---
 {
 	id: attributes.uriParams.'flight_id',
-	price: payload.price,
-	emptySeats: payload.emptySeats
+	price: payload.price as Number {class: "java.lang.Double"},
+	emptySeats: payload.emptySeats as Number
 }]]></ee:set-variable>
             </ee:variables>
         </ee:transform>

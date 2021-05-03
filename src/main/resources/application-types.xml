@@ -8,6 +8,13 @@ type flight_json = Array<{|  airline: String,   flightCode: String,   fromAirpor
 
 ]]></types:shape>
     </types:type>
+    <types:type name="update" format="json">
+      <types:shape format="weave" example="examples/update.json"><![CDATA[%dw 2.0
+
+type update = Array<{|  emptySeats: Number {"typeId": "int"},   price: Number {"typeId": "int"}|}> {"example": "[{\\\"emptySeats\\\":188,\\\"price\\\":250}]"}
+
+]]></types:shape>
+    </types:type>
   </types:catalog>
   <types:enrichment select="#88977b7f-77a4-4480-8a8b-6ac1df8e6e9f">
     <types:processor-declaration>
@@ -52,6 +59,20 @@ type flight_json = Array<{|  airline: String,   flightCode: String,   fromAirpor
           <types:payload type="flight_json"/>
         </types:message>
       </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#38aa9fec-ca50-4501-9398-1330740dc477">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="update"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:variables>
+          <types:variable name="flight" type="update"/>
+        </types:variables>
+      </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
 </types:mule>
