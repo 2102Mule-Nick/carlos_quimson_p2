@@ -21,3 +21,10 @@ The American Flights API is a system API for operations on the american table in
 ### To-do list
 - Refactor to follow best practices 
 - Implement MUnit for testing
+
+## Getting Started
+####
+Copy the repo via executing the command: 
+  `git clone https://github.com/PorkodiVenkatesh/PROJECT-NAME#project-name`
+  
+#### Database Setup
