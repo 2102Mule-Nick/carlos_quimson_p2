@@ -23,8 +23,38 @@ The American Flights API is a system API for operations on the american table in
 - Implement MUnit for testing
 
 ## Getting Started
-####
-Copy the repo via executing the command: 
+#### Copy the repo via executing the command: 
   `git clone https://github.com/PorkodiVenkatesh/PROJECT-NAME#project-name`
   
 #### Database Setup
+The database that the application works with requires the table to have the following columns:
+- id - integer/serial
+- code - text
+- price - float
+- departuredate - text
+- origin - text
+- destination - text
+- emptyseats - int
+- planetype - text
+- totalseats - int
+
+#### Usage
+The application must be opened in Anypoint Studio and run. 
+
+Use Advanced Rest Client to see how the application works. A sample input data is included below.
+
+```
+{
+    "id": 4,
+    "code": "ffee0192",
+    "price": 300,
+    "origin": "MUA",
+    "destination": "LAX",
+    "departureDate": "2016-01-19",
+    "emptySeats": 0,
+    "plane": {
+      "totalSeats": 300,
+      "type": "Boeing 777"
+    }
+  }
+```
